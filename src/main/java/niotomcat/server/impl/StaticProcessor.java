@@ -9,5 +9,6 @@ public class StaticProcessor implements Processor {
     @Override
     public void process(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
+        httpServletResponse.sendRedirect();
     }
 }

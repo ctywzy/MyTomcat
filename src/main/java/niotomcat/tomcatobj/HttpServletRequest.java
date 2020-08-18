@@ -1,14 +1,14 @@
 package niotomcat.tomcatobj;
 
+import niotomcat.common.Constant;
+import niotomcat.server.ServletContext;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HttpServletRequest {
-    private static final int BYTE = 1024;
+
 
     /**
      * 请求方法
@@ -18,9 +18,9 @@ public class HttpServletRequest {
     /**
      * 请求地址
      */
-    private String url;
+    private String uri;
 
-    private String jsession = null;
+    private String jsessionid = null;
 
     /**
      * 请求体
@@ -46,8 +46,8 @@ public class HttpServletRequest {
         return this.method;
     }
 
-    public String getJsession(){
-        return this.jsession;
+    public String getJsessionid() {
+        return this.jsessionid;
     }
 
     public List<Cookie> getCookies(){
@@ -58,8 +58,8 @@ public class HttpServletRequest {
         return parameter.get(key);
     }
 
-    public String getUrl(){
-        return this.url;
+    public String getUri(){
+        return this.uri;
     }
 
     /**
@@ -70,7 +70,7 @@ public class HttpServletRequest {
         StringBuilder stringBuilder = new StringBuilder();
         int length = -1;
         //处理字节上限
-        byte[] bytes = new byte[100 * BYTE];
+        byte[] bytes = new byte[100 * Constant.BYTE];
 
         try{
             length = inputStream.read(bytes);
@@ -87,4 +87,24 @@ public class HttpServletRequest {
 
         content = stringBuilder.toString();
     }
+
+    public HttpSession getSession(){
+        HttpSession session;
+
+        //若不存在或者不在这次连接中，创建再返回
+        if(jsessionid == null || !ServletContext.sessions.containsKey(jsessionid)){
+
+            jsessionid = UUID.randomUUID().toString();
+
+            session = new HttpSession(jsessionid);
+            ServletContext.sessions.put(jsessionid,session);
+
+        }else{
+
+            return ServletContext.sessions.get(jsessionid);
+        }
+
+        return session;
+    }
+
 }

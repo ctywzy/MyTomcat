@@ -1,4 +1,6 @@
-package niotomcat.server;
+package niotomcat;
+
+import niotomcat.server.ServerService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -57,6 +59,6 @@ public class MyTomcat {
 
 
     public static void main(String[] args) {
-
+        new MyTomcat().startServer();
     }
 }

@@ -14,7 +14,7 @@ public class ServerService implements Runnable{
 
     private Socket socket;
 
-    ServerService(Socket socket){
+    public ServerService(Socket socket){
         this.socket = socket;
     }
 
@@ -37,7 +37,7 @@ public class ServerService implements Runnable{
         HttpServletRequest httpServletRequest = new HttpServletRequest(inputStream);
         // 创建一个响应对象
         HttpServletResponse httpServletResponse = new HttpServletResponse(httpServletRequest, outputStream);
-        String uri = httpServletRequest.getUrl();
+        String uri = httpServletRequest.getUri();
         // 判断是动态还是静态请求
         Processor processor;
 
@@ -47,6 +47,7 @@ public class ServerService implements Runnable{
             processor = new StaticProcessor();
         }
 
+        // TODO 这个地方可以改成servlet是放在xml里配置的，而不是LazyLoad
         processor.process(httpServletRequest, httpServletResponse);
 
         try{

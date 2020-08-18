@@ -14,5 +14,16 @@ public class HttpSession {
     }
 
 
+    public void setAttribute(String key, Object value) {
+        sessionMap.put(key, value);
+    }
+
+    public Object getAttribute(String key){
+        return sessionMap.get(key);
+    }
+
+    public void removeAttribute(String key){
+        sessionMap.remove(key);
+    }
 }
 
