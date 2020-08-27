@@ -37,6 +37,10 @@ public class MyTomcat {
         Socket socket = null;
         try{
             socket = serverSocket.accept();
+            /**
+             * 这里用到的是一套堵塞式的请求，只有建立连接，这个县城才会进行下面的操作
+             */
+            System.out.println("线程号"+Thread.currentThread().getId()+"正在操作");
             System.out.println("客户端"+socket.getRemoteSocketAddress()+"连接成功");
 
             ServerService serverService = new ServerService(socket);
